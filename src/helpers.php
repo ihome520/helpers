@@ -140,14 +140,14 @@ if ( ! function_exists('createUniqueOrderSn')) {
     }
 }
 
-if ( ! function_exists('GetRandStr')) {
+if ( ! function_exists('getRandString')) {
     /**
      * 获取随机字符串
      * User: Clannad ~ ☆
      * @param int $length 需要生成的长度
      * @return string
      */
-    function GetRandStr(int $length)
+    function getRandString(int $length)
     {
         //字符组合
         $str     = 'ABCDEFGHJKLMNOPQRSTUVWXYZ23456789';
