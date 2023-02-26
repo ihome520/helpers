@@ -9,22 +9,22 @@ if ( ! function_exists('getTree')) {
      * 不使用静态数组成员获取子孙树结构
      * User: Clannad ~ ☆
      * @param array $data
-     * @param string $pidFName
-     * @param string $idFName
-     * @param string $levelFName
+     * @param string $pidName
+     * @param string $idName
+     * @param string $levelName
      * @param int $pid
      * @param int $level
      * @return array
      */
-    function getTree(array $data, string $pidFName = 'pid', string $idFName = 'id', string $levelFName = 'level', int $pid = 0, int $level = 0)
+    function getTree(array $data, string $pidName = 'pid', string $idName = 'id', string $levelName = 'level', int $pid = 0, int $level = 0)
     {
         $tree = array();
         foreach ($data as $key => $value) {
-            if ($value[$pidFName] == $pid) {
-                $value[$levelFName] = $level;
+            if ($value[$pidName] == $pid) {
+                $value[$levelName] = $level;
                 $tree[] = $value;
                 unset($data[$key]);
-                $tempArr = getTree($data, $pidFName, $idFName, $levelFName = 'level', $value[$idFName], $level + 1);
+                $tempArr = getTree($data, $pidName, $idName, $levelName = 'level', $value[$idName], $level + 1);
                 if ( ! empty($tempArr)) {
                     $tree = array_merge($tree, $tempArr);
                 }
@@ -44,7 +44,7 @@ if ( ! function_exists('bcCompNumber')) {
      * @param $rightNum float | integer 右边的数字（被比较数）
      * @return bool 成立返回true 不成立 返回false
      */
-    function bcCompNumber(float $leftNum, string $comp = '>', float  $rightNum = 0)
+    function bcCompNumber($leftNum, string $comp = '>',  $rightNum = 0)
     {
         //左大 +1 等于 0 右大 -1
         switch ($comp) {
@@ -112,7 +112,7 @@ if ( ! function_exists('getRandString')) {
     function getRandString(int $length)
     {
         //字符组合
-        $str     = 'ABCDEFGHJKLMNOPQRSTUVWXYZ23456789';
+        $str     = 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnpqresuvwxyz23456789';
         $len     = strlen($str) - 1;
         $randstr = '';
         for ($i = 0; $i < $length; $i++) {

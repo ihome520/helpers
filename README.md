@@ -30,6 +30,9 @@ $ composer require ihome/helpers -vvv
     ?>
 ```
 
+## 具体文档请参考
+[ihome/helpers 开源文档](https://xzrnoz527j.k.topthink.com/@6gp5d7y2b3/wendangshuoming.html)
+
 ## 贡献
 
 您可以通过以下三种方式之一做出贡献：
