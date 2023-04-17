@@ -423,4 +423,26 @@ if ( ! function_exists('cutTel')) {
         return $left . '****' . $right;
     }
 }
+
+if ( ! function_exists('arrayToTree')) {
+    /**
+     *  将一个数组转换成树形结构
+     * @param $array array 数组
+     * @param $pidKey string 父级id的key
+     * @param $pid int 父级id
+     * @return array
+     */
+    function arrayToTree($array, $pidKey = 'pid', $pid = 0)
+    {
+        $tree = [];
+        foreach ($array as $v) {
+            if ($v[$pidKey] == $pid) {
+                $v['children'] = arrayToTree($array, $v['id']);
+                $tree[]        = $v;
+            }
+        }
+        return $tree;
+    }
+}
+
 ?>
