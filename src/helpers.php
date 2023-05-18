@@ -44,7 +44,7 @@ if ( ! function_exists('bcCompNumber')) {
      * @param $rightNum float | integer 右边的数字（被比较数）
      * @return bool 成立返回true 不成立 返回false
      */
-    function bcCompNumber($leftNum, string $comp = '>',  $rightNum = 0)
+    function bcCompNumber($leftNum, string $comp = '>', $rightNum = 0)
     {
         //左大 +1 等于 0 右大 -1
         switch ($comp) {
@@ -112,11 +112,11 @@ if ( ! function_exists('getRandString')) {
     function getRandString(int $length)
     {
         //字符组合
-        $str     = 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnpqresuvwxyz23456789';
-        $len     = strlen($str) - 1;
+        $str = 'ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnpqresuvwxyz23456789';
+        $len = strlen($str) - 1;
         $randstr = '';
         for ($i = 0; $i < $length; $i++) {
-            $num     = mt_rand(0, $len);
+            $num = mt_rand(0, $len);
             $randstr .= $str[$num];
         }
         return $randstr;
@@ -136,9 +136,9 @@ if ( ! function_exists('writeLog')) {
             $info = json_encode($info, JSON_UNESCAPED_UNICODE);
         }
         $mode = 'a';//追加方式写
-        $msg  .= date('Y-m-d H:i:s', time()) . "\n";
-        $msg  .= $info . "\n";
-        $msg  .= "===========================================\n";
+        $msg .= date('Y-m-d H:i:s', time()) . "\n";
+        $msg .= $info . "\n";
+        $msg .= "===========================================\n";
 
         $folderPath = getcwd() . '/' . $folderName;
         // 判断文件夹是否存在 不存在就创建
@@ -146,9 +146,9 @@ if ( ! function_exists('writeLog')) {
             mkdir($folderPath, 0777, true);
         }
 
-        $file    = $folderPath . '/' . date('Y-m-d', time()) . '.txt';
+        $file = $folderPath . '/' . date('Y-m-d', time()) . '.txt';
         $oldMask = @umask(0);
-        $fp      = @fopen($file, $mode);
+        $fp = @fopen($file, $mode);
         @flock($fp, 3);
 
         if ( ! $fp) {
@@ -213,9 +213,9 @@ if ( ! function_exists('httpCurl')) {
         //请求成功 返回数据（数组格式）
         if ($res == "json") {
             return json_decode($output, true);
-        }else if($res == 'xml'){
+        } else if ($res == 'xml') {
             return json_decode(json_encode(simplexml_load_string($output)), true);
-        }else{
+        } else {
             return $res;
         }
     }
@@ -246,14 +246,14 @@ if ( ! function_exists('getAllchildren')) {
         foreach ($data as $v) {
             if ($v[$pid] == $id) {
                 $childIds[] = $v[$id];
-                $childIds   = array_merge($childIds, getAllchildren($v[$id], $data, $pid));
+                $childIds = array_merge($childIds, getAllchildren($v[$id], $data, $pid));
             };
         };
         return $childIds;
     }
 }
 
-if(! function_exists('getAllParentIds')){
+if ( ! function_exists('getAllParentIds')) {
     /**
      * 获取所有上级ID的集合
      * User: ❤ CLANNAD ~ After Story By だんご
@@ -265,12 +265,12 @@ if(! function_exists('getAllParentIds')){
     function getAllParentIds(string $id = 'id', array $data = [], string $pid = 'pid')
     {
         $parentIds = [];
-        foreach($data as $v){
+        foreach ($data as $v) {
             //从小到大 排列
-            if($v[$id] == $id){
+            if ($v[$id] == $id) {
                 $parentIds[] = $v[$id];
-                if($v[$pid] > 0){
-                    $parentIds = array_merge(getAllParentIds($v[$pid],$data), $parentIds);
+                if ($v[$pid] > 0) {
+                    $parentIds = array_merge(getAllParentIds($v[$pid], $data), $parentIds);
                 }
             }
         }
@@ -321,9 +321,9 @@ if ( ! function_exists('formatPublishTime')) {
         }
 
         if (time() - $timestamp < 60) {
-            if($formatSecond){
+            if ($formatSecond) {
                 return '刚刚';
-            }else{
+            } else {
                 //几秒
                 return time() - $timestamp . '秒';
             }
@@ -340,8 +340,8 @@ if ( ! function_exists('base64EncodeImage')) {
      */
     function base64EncodeImage($imageFile)
     {
-        $imageInfo   = getimagesize($imageFile);
-        $imageData   = fread(fopen($imageFile, 'r'), filesize($imageFile));
+        $imageInfo = getimagesize($imageFile);
+        $imageData = fread(fopen($imageFile, 'r'), filesize($imageFile));
         $base64Image = 'data:' . $imageInfo['mime'] . ';base64,' . chunk_split(base64_encode($imageData));
         return $base64Image;
     }
@@ -372,29 +372,29 @@ if ( ! function_exists('stringEncrypt')) {
      */
     function stringEncrypt(string $string, string $operation = 'E')
     {
-        $key           = md5(env('ENCRYPT_KEY', 'crypt_key'));// 密匙
-        $keyLength    = strlen($key);
-        $string        = $operation == 'D' ? base64_decode($string) : substr(md5($string . $key), 0, 8) . $string;
+        $key = md5(env('ENCRYPT_KEY', 'crypt_key'));// 密匙
+        $keyLength = strlen($key);
+        $string = $operation == 'D' ? base64_decode($string) : substr(md5($string . $key), 0, 8) . $string;
         $stringLength = strlen($string);
-        $rndkey        = $box = array();
-        $result        = '';
+        $rndkey = $box = array();
+        $result = '';
         for ($i = 0; $i <= 255; $i++) {
             $rndkey[$i] = ord($key[$i % $keyLength]);
-            $box[$i]    = $i;
+            $box[$i] = $i;
         }
         for ($j = $i = 0; $i < 256; $i++) {
-            $j       = ($j + $box[$i] + $rndkey[$i]) % 256;
-            $tmp     = $box[$i];
+            $j = ($j + $box[$i] + $rndkey[$i]) % 256;
+            $tmp = $box[$i];
             $box[$i] = $box[$j];
             $box[$j] = $tmp;
         }
         for ($a = $j = $i = 0; $i < $stringLength; $i++) {
-            $a       = ($a + 1) % 256;
-            $j       = ($j + $box[$a]) % 256;
-            $tmp     = $box[$a];
+            $a = ($a + 1) % 256;
+            $j = ($j + $box[$a]) % 256;
+            $tmp = $box[$a];
             $box[$a] = $box[$j];
             $box[$j] = $tmp;
-            $result  .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
+            $result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
         }
         if ($operation == 'D') {
             if (substr($result, 0, 8) == substr(md5(substr($result, 8) . $key), 0, 8)) {
@@ -418,7 +418,7 @@ if ( ! function_exists('cutTel')) {
      */
     function cutTel(string $tel)
     {
-        $left  = substr($tel, 0, 3);
+        $left = substr($tel, 0, 3);
         $right = substr($tel, 7);
         return $left . '****' . $right;
     }
@@ -438,11 +438,28 @@ if ( ! function_exists('arrayToTree')) {
         foreach ($array as $v) {
             if ($v[$pidKey] == $pid) {
                 $v['children'] = arrayToTree($array, $v['id']);
-                $tree[]        = $v;
+                $tree[] = $v;
             }
         }
         return $tree;
     }
 }
 
+if ( ! function_exists('batchReplace')) {
+    /**
+     * 批量替换字符串
+     * @param array $originData 原始数据
+     * @param array $replaceArr 要替换的数组 例如 ['a', 'b', 'c']
+     * @param string $string 要替换的字符串
+     * @return array 替换后的数据
+     */
+    function batchReplace(array $originData, array $replaceArr, string $string)
+    {
+        foreach ($originData as &$value) {
+            $value = str_replace($replaceArr, $string, $value);
+        }
+
+        return $originData;
+    }
+}
 ?>
